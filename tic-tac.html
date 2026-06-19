@@ -13,8 +13,12 @@
         rel="stylesheet">
 
     <style>
+        body {
+            margin: 0px;
+        }
+
         .bg {
-            padding-top: 160px;
+            height: 100vh;
             background-image: url("src/img_bg.svg");
             background-repeat: no-repeat;
             background-size: cover;
@@ -30,6 +34,7 @@
             font-family: "MADE Waffle Soft";
             font-size: 80px;
             font-style: normal;
+            margin-top: 160px;
         }
 
         .text_main {
@@ -126,11 +131,14 @@
         }
 
         .bg_block_2 {
-            padding-top: 160px;
+            height: 100vh;
             background-image: url("src/img_bg_2.svg");
             background-repeat: no-repeat;
             background-size: cover;
-            padding-bottom: 100px;
+        }
+
+        .hidden {
+            display: none;
         }
 
         .button_size {
@@ -154,11 +162,10 @@
         }
 
         .bg_block_3 {
-            padding-top: 160px;
+            min-height: 100vh;
             background-image: url("src/img_bg_3.svg");
             background-repeat: no-repeat;
             background-size: cover;
-            padding-bottom: 100px;
         }
 
         .button_close {
@@ -167,6 +174,8 @@
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
+            padding-top: 100px;
+            padding-right: 80px;
         }
 
         table {
@@ -204,19 +213,34 @@
             gap: 20px;
             justify-content: center;
             align-items: center;
+
         }
 
         .hidden {
             display: none;
+        }
+
+        .flex-row-end {
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+        }
+
+        .nullCell {
+            background: url(src/zero.svg) center center no-repeat #FFF;
+        }
+
+        .cross {
+            background: url(src/cross.svg) center center no-repeat #FFF;
         }
     </style>
 
 </head>
 
 <body>
-    <div class="bg">
+    <div id="block_one" class="bg">
         <div class="main">
-            <span class="h1">Крестки-Нолики</span>
+            <span class="h1">Крестики-Нолики</span>
             <div class="button_text">
                 <div class="text_image">
                     <span class="text_main">На двоих</span>
@@ -226,51 +250,39 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div>
-                    <button class="button">Выбрать размер поля</button>
-                </div>
+
+                <button id="main_button" class="button">Выбрать размер поля</button>
+
             </div>
         </div>
         <img class="image_main" src="src/image_main.svg">
     </div>
-    <div class="hidden">
-        <div class="bg_block_2">
-            <div class="main">
-                <span class="h1">Размер поля:</span>
-                <div class="button_size">
-                    <button class="button_size_block2">3 X 3</button>
-                    <button class="button_size_block2">4 X 4</button>
-                    <button class="button_size_block2">5 X 5</button>
-                    <button class="button_size_block2">6 X 6</button>
-                    <button class="button_size_block2">7 X 7</button>
-                </div>
-            </div>
-        </div>
 
-        <div class="bg_block_3">
-            <div class="text_image_table">
-                <button class="button_close"><img src="src/basil_cross-solid.svg"></button>
-                <div class="text_table">
-                    <span class="text_main">Ваш ход:</span>
-                    <table>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </div>
+    <div id="size_game" class="bg_block_2 hidden">
+        <div class="main">
+            <span class="h1">Размер поля:</span>
+            <div class="button_size">
+                <button id="size_3" class="button_size_block2">3 X 3</button>
+                <button id="size_4" class="button_size_block2">4 X 4</button>
+                <button id="size_5" class="button_size_block2">5 X 5</button>
+                <button id="size_6" class="button_size_block2">6 X 6</button>
+                <button id="size_7" class="button_size_block2">7 X 7</button>
             </div>
         </div>
     </div>
+
+    <div id="gameView" class="bg_block_3 hidden">
+        <div class="text_image_table">
+            <div id="button_cross" class="flex-row-end"><button class="button_close"><img
+                        src="src/basil_cross-solid.svg"></button></div>
+
+            <div class="text_table">
+                <span class="text_main">Ваш ход:</span>
+                <table id="table">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="tic-tac.js"></script>
 </body>
