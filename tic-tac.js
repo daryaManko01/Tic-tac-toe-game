@@ -16,22 +16,34 @@ let buttonGameSize = document.getElementById('size_3');
 
 buttonGameSize.addEventListener('click', gameStart);
 
+
+let arr = [];
+
 function gameStart(count) {
     table.innerHTML = ""
     for (let x = 0; x < count; x++) {
+
+        arr[x] = [];
+
         var tr = document.createElement('tr')
         for (let i = 0; i < count; i++) {
+
+            arr[x].push('')
+
             var td = document.createElement('td');
-            td.addEventListener('click', addElement);
+            td.addEventListener('click', addElement); //обработчик поля
 
             tr.appendChild(td);
         }
+
         table.appendChild(tr);
     }
-
     gameView.classList.remove('hidden');
     size_game.classList.add('hidden');
+    gameFinish = false;
+    isCross = true;
 }
+
 
 //functions for a 3x3 game size
 
@@ -95,19 +107,78 @@ let isCross = true;
 
 function addElement() {
 
-    if (this.classList.contains('cross') || this.classList.contains('nullCell')) {
+    if (this.classList.contains('cross') || this.classList.contains('nullCell') || gameFinish) {
         return
     }
     else {
 
+        const rowIndex = this.parentElement.rowIndex; // Индекс строки
+        const colIndex = this.cellIndex;
+
         if (isCross) {
+
             this.classList.add('cross');
+            arr[rowIndex][colIndex] = '+';
             isCross = false;
 
         } else {
             this.classList.add('nullCell');
+            arr[rowIndex][colIndex] = '0';
             isCross = true;
         }
     }
-
+    winGame()
 }
+
+let gameFinish = false;
+
+function winGame() { //checks whether the participant has won
+
+    //check for equality across columns
+    for (let sellIndex = 0; sellIndex < arr.length; sellIndex++) { //we iterate through the columns
+
+        let allEqual = true;
+
+        for (let rowIndex = 0; rowIndex < arr.length; rowIndex++) { //iterating through the lines
+
+            if (arr[rowIndex][sellIndex] !== arr[0][sellIndex]) //we compare each element of the row with the first element in that column
+            {
+                allEqual = false;
+            }
+        }
+        if (allEqual && arr[0][sellIndex] !== '') {
+
+            if (!isCross) {
+                console.log("Победа крестиков");
+                alert("Победа крестиков");
+            } else {
+                console.log("Победа ноликов");
+                alert("Победа ноликов");
+            }
+            gameFinish = true;
+            return
+        }
+    }
+
+
+    let elemTry = true;
+    for (let row of arr) { ///cycle by timeframe
+
+        const allEqual = row.every(val => val === row[0]); //all elements are equal to the string
+
+        if (allEqual && row[0] !== '') {
+
+            if (!isCross) {
+                console.log("Победа крестиков");
+                alert("Победа крестиков");
+            } else {
+                console.log("Победа ноликов");
+                alert("Победа ноликов");
+            }
+            gameFinish = true;
+            return
+        }
+    }
+}
+
+
