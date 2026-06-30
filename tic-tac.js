@@ -17,7 +17,7 @@ let buttonGameSize = document.getElementById('size_3');
 buttonGameSize.addEventListener('click', gameStart);
 
 
-let arr = [];
+let arr = []; //displays the current field state
 
 function gameStart(count) {
     table.innerHTML = ""
@@ -31,7 +31,7 @@ function gameStart(count) {
             arr[x].push('')
 
             var td = document.createElement('td');
-            td.addEventListener('click', addElement); //обработчик поля
+            td.addEventListener('click', addElement); //field handler
 
             tr.appendChild(td);
         }
@@ -42,6 +42,41 @@ function gameStart(count) {
     size_game.classList.add('hidden');
     gameFinish = false;
     isCross = true;
+}
+
+//create a function to find a free cell
+//get all empty cells
+
+function computerMove() {
+
+    if (gameFinish) return;
+
+    let freeCells = [];
+
+    for (let row = 0; row < arr.length; row++) {
+        for (let col = 0; col < arr.length; col++) {
+
+            if (arr[row][col] === '') {
+                freeCells.push({ row, col });
+            }
+        }
+    }
+
+    if (freeCells.length === 0) return;
+
+    //random free cell
+    let randomIndex = Math.floor(Math.random() * freeCells.length);
+    let cell = freeCells[randomIndex];
+
+    //update the array
+    arr[cell.row][cell.col] = '0';
+
+    //update the table
+    table.rows[cell.row].cells[cell.col].classList.add('nullCell');
+
+    isCross = true;
+
+    winGame();
 }
 
 
@@ -101,9 +136,10 @@ function closePage() {
     gameView.classList.add('hidden');
 }
 
-//The tic tac toe function
+//The tic tac toe function 
 
-let isCross = true;
+let isCross = true; //determines whether the next piece is an X
+let checbox = document.getElementById('checkbox');
 
 function addElement() {
 
@@ -112,7 +148,7 @@ function addElement() {
     }
     else {
 
-        const rowIndex = this.parentElement.rowIndex; // Индекс строки
+        const rowIndex = this.parentElement.rowIndex; //row index
         const colIndex = this.cellIndex;
 
         if (isCross) {
@@ -128,11 +164,71 @@ function addElement() {
         }
     }
     winGame()
+
+    if (!checbox.checked) {
+        computerMove()
+    }
 }
 
 let gameFinish = false;
+let modal = document.getElementById('modal');
+let modalTwo = document.getElementById('modal_two');
+
+let endWindowGame = document.getElementById("endWindowGame");
+let endWindowGameTwo = document.getElementById('endWindowGame_two');
+
+endWindowGameTwo.addEventListener("click", closeModalTwo);
+endWindowGame.addEventListener("click", closeModal);
+
+function closeModal() {
+    modal.classList.remove("is-open");
+    closePage()
+}
+
+function closeModalTwo() {
+    modalTwo.classList.remove("is-open");
+    closePage()
+}
+
+
 
 function winGame() { //checks whether the participant has won
+
+    //left diagonal
+    let allEqual = true;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i][i] !== arr[0][0])
+            allEqual = false;
+    }
+
+    if (allEqual && arr[0][0] !== '') {
+
+        if (!isCross) {
+            modal.classList.add("is-open");
+        } else {
+            modalTwo.classList.add("is-open");
+        }
+        gameFinish = true;
+        return
+    }
+
+    allEqual = true;
+    for (let i = arr.length - 1; i >= 0; i--) {
+        if (arr[arr.length - 1 - i][i] !== arr[0][arr.length - 1])
+            allEqual = false;
+    }
+
+    if (allEqual && arr[0][arr.length - 1] !== '') {
+
+        if (!isCross) {
+            modal.classList.add("is-open");
+        } else {
+            modalTwo.classList.add("is-open");
+        }
+        gameFinish = true;
+        return;
+    }
+
 
     //check for equality across columns
     for (let sellIndex = 0; sellIndex < arr.length; sellIndex++) { //we iterate through the columns
@@ -149,11 +245,9 @@ function winGame() { //checks whether the participant has won
         if (allEqual && arr[0][sellIndex] !== '') {
 
             if (!isCross) {
-                console.log("Победа крестиков");
-                alert("Победа крестиков");
+                modal.classList.add("is-open");
             } else {
-                console.log("Победа ноликов");
-                alert("Победа ноликов");
+                modalTwo.classList.add("is-open");
             }
             gameFinish = true;
             return
@@ -162,23 +256,20 @@ function winGame() { //checks whether the participant has won
 
 
     let elemTry = true;
-    for (let row of arr) { ///cycle by timeframe
+    for (let row of arr) { //loop through timeframes
 
         const allEqual = row.every(val => val === row[0]); //all elements are equal to the string
 
         if (allEqual && row[0] !== '') {
 
             if (!isCross) {
-                console.log("Победа крестиков");
-                alert("Победа крестиков");
+                modal.classList.add("is-open");
             } else {
-                console.log("Победа ноликов");
-                alert("Победа ноликов");
+                modalTwo.classList.add("is-open");
             }
             gameFinish = true;
             return
         }
     }
 }
-
 

@@ -166,43 +166,45 @@
             background-image: url("src/img_bg_3.svg");
             background-repeat: no-repeat;
             background-size: cover;
+            padding-top: 120px;
         }
 
         .button_close {
-            background-color: #FDCFCF;
-            border: 1px solid #FDCFCF;
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            padding-top: 100px;
-            padding-right: 80px;
+
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
         }
 
         table {
             border-collapse: collapse;
-            /* Убирает двойные линии */
+            /* removes double lines */
             margin: 20px auto;
             border-collapse: separate;
-            /* Отменяем слияние границ */
+            /* disable border collapsing */
             border-spacing: 0;
-            /* Убираем промежутки между ячейками */
+            /* remove cell spacing */
             border-radius: 30px;
-            /* Радиус скругления углов */
+            /* border radius */
             overflow: hidden;
 
         }
 
         td {
             width: 100px;
-            /* Делает клетки квадратными */
+            /* make cells square */
             height: 100px;
             border: 1px solid #CF2926;
             text-align: center;
-            /* Выравнивает текст по центру */
+            /* align text to center */
             font-size: 50px;
-            /* Размер крестика или нолика */
+            /* X/O symbol size */
             cursor: pointer;
-            /* Меняет курсор при наведении */
+            /* set cursor on hover */
             background-color: #FFF;
 
         }
@@ -233,6 +235,50 @@
         .cross {
             background: url(src/cross.svg) center center no-repeat #FFF;
         }
+
+        .h1_winTable {
+            color: #FFF;
+            text-align: center;
+            font-family: "MADE Waffle Soft";
+            font-size: 40px;
+        }
+
+        .image {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 40px;
+            padding-top: 40px;
+        }
+
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(149, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.is-open {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #821614;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            padding: 40px;
+        }
     </style>
 
 </head>
@@ -246,7 +292,7 @@
                     <span class="text_main">На двоих</span>
 
                     <label class="switch">
-                        <input type="checkbox">
+                        <input id="checkbox" type="checkbox">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -272,17 +318,39 @@
     </div>
 
     <div id="gameView" class="bg_block_3 hidden">
-        <div class="text_image_table">
-            <div id="button_cross" class="flex-row-end"><button class="button_close"><img
-                        src="src/basil_cross-solid.svg"></button></div>
+        <div id="button_cross" class="flex-row-end"><button class="button_close"><img
+                    src="src/basil_cross-solid.svg"></button></div>
 
-            <div class="text_table">
-                <span class="text_main">Ваш ход:</span>
-                <table id="table">
-                </table>
+        <div class="text_table">
+            <span class="text_main">Ваш ход:</span>
+            <table id="table">
+            </table>
+        </div>
+
+    </div>
+
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <button id=endWindowGame class="button_close"><img src="src/crossWhite.svg"></button>
+            <div class="image">
+                <img src="src/fire.svg">
+                <span class="h1_winTable"><strong>Победа крестиков!</strong></span>
             </div>
         </div>
     </div>
+
+
+    <div class="modal-overlay" id="modal_two">
+        <div class="modal-content">
+            <button id=endWindowGame_two class="button_close"><img src="src/crossWhite.svg"></button>
+            <div class="image">
+                <img src="src/fire.svg">
+                <span class="h1_winTable"><strong>Победа ноликов!</strong></span>
+            </div>
+        </div>
+    </div>
+
 
     <script src="tic-tac.js"></script>
 </body>
